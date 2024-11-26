@@ -34,13 +34,14 @@ class DeepLearningQuoteGenerator:
 
     def build_model(self):
         model = Sequential([
-            LSTM(256, input_shape=(self.seq_length, self.vocab_size), return_sequences=True),
+            LSTM(128, input_shape=(self.seq_length, self.vocab_size), return_sequences=True),
             Dropout(0.2),
-            LSTM(256),
+            LSTM(128),
             Dropout(0.2),
+            Dense(self.vocab_size // 2, activation='relu'),
             Dense(self.vocab_size, activation='softmax')
         ])
-        model.compile(loss='categorical_crossentropy', optimizer=Adam(learning_rate=0.001))
+        model.compile(loss='categorical_crossentropy', optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
         return model
 
     def data_generator(self):
